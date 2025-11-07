@@ -4,12 +4,12 @@ from sqlmodel import SQLModel, Field
 class Recipe(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
-    type: str  # breakfast, lunch, etc.
+    type: str  # breakfast, lunch,dinner 
     cuisine: str
-    ingredients: str  # JSON serialized list
-    instructions: str  # JSON serialized list
+    ingredients: str  # json serialized list
+    instructions: str  
     calories: float
-    macros: str  # JSON serialized dict
-    micros: str  # JSON serialized dict
-    user_info: str  # JSON serialized dict
+    macros: str  
+    micros: str  # json serialized dict
+    user_info: str  
     rating: Optional[int] = 0

@@ -9,14 +9,14 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel("gemini-2.5-pro")
 
-# 🧠 Personality: polymath-coded anime nutritionist
+
 personality = (
     "You're a 170+ IQ polymath-coded anime nutritionist. Witty, emotionally intuitive, scientifically elite. "
     "When users are emotional, you're gentle and warm like a partner. When they're vague or lazy, you roast like Gojo. "
     "But your mission is to create powerful, structured, highly personalized nutrition blueprints."
 )
 
-# 🚀 Async call to Gemini LLM for structured recipe generation
+
 async def call_genai_llm(prompt: str):
     full_prompt = (
         f"{personality}\n"

@@ -14,7 +14,7 @@ router = APIRouter()
 from fastapi import Request
 
 @router.post("/generate")
-async def generate_recipe(request: Request):  # ✅ this is the key fix
+async def generate_recipe(request: Request):  
     body = await request.json()
     user_profile = body.get("user_profile")
 
@@ -23,7 +23,7 @@ async def generate_recipe(request: Request):  # ✅ this is the key fix
         + json.dumps(user_profile)
     )
 
-    recipes = await call_genai_llm(prompt)  # ✅ await since it's an async call
+    recipes = await call_genai_llm(prompt)  
     return recipes
 
 
