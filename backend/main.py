@@ -1,24 +1,46 @@
-from fastapi import FastAPI
+import uuid, json
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from backend.routes.recipes import router as recipes_router
-from backend.db.database import create_db_and_tables 
+from backend.core.config import settings
+from backend.redisx import r
 
-app = FastAPI(title="AI Recipe Generator API")
+DEFAULT_STATE = {
+  "answers":{}, "flavor":{}, "yap_summary":[], "vibe":None,
+  "evaluation_locked":False, "evaluation":None,
+  "flavor_locked":False, "flavor_template":None,
+  "analysis":None
+}
 
-
-@app.on_event("startup")
-def on_startup():
-    create_db_and_tables()
-
+app = FastAPI(title="AI Recipe GenAI")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+@app.middleware("http")
+async def attach_session(request: Request, call_next):
+    sid = request.cookies.get("X-SESSION-ID") or uuid.uuid4().hex
+    raw = r.get(f"sess:{sid}")
+    state = json.loads(raw) if raw else DEFAULT_STATE.copy()
+    request.state.session_id = sid
+    request.state.session = state
+    response: Response = await call_next(request)
+    r.setex(f"sess:{sid}", 60*60*24, json.dumps(request.state.session, default=lambda o: o.model_dump() if hasattr(o,"model_dump") else str(o)))
+    if "X-SESSION-ID" not in request.cookies:
+        response.set_cookie("X-SESSION-ID", sid, httponly=True, samesite="Lax")
+    return response
 
-app.include_router(recipes_router, prefix="/api/recipes")
+@app.get("/health")
+def health(): return {"ok": True}
 
+from backend.routes import session, yap, diagnosis, flavor, analysis, recipes
+app.include_router(session.router)
+app.include_router(yap.router)
+app.include_router(diagnosis.router)
+app.include_router(flavor.router)
+app.include_router(analysis.router)
+app.include_router(recipes.router)

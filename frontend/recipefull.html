@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full Recipe Details</title>
+  <script src="app.js" defer></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-3xl mx-auto bg-white rounded shadow p-6">
+    <h1 class="text-2xl font-bold mb-4">Recipe</h1>
+    <div id="full-recipe"></div>
+    <div id="llm-response" class="mt-6"></div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const recipe = JSON.parse(localStorage.getItem("selected_recipe") || "null");
+      const box = document.getElementById("full-recipe");
+      if (!recipe) { box.innerHTML = "<em>No recipe selected.</em>"; return; }
+      box.innerHTML = `
+        <div class="space-y-2">
+          <div class="text-xl font-semibold">${recipe.name || "Recipe"}</div>
+          <div class="opacity-80">${recipe.cuisine || ""} • ${recipe.type || ""} • ${recipe.calories || ""}</div>
+          <div class="pt-3">${(recipe.instructions || "").toString().replace(/\n/g,"<br>")}</div>
+        </div>`;
+    });
+  </script>
+</body>
+</html>

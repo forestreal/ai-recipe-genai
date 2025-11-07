@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Results</title>
+  <script src="/frontend/app.js" defer></script>
+  <script>document.addEventListener("DOMContentLoaded", async () => { await generateRecipes(); });</script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 p-8">
+  <nav class="bg-white border-b sticky top-0 z-30">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center gap-4">
+      <a href="/frontend/index.html" class="font-semibold">Home</a>
+      <a href="/frontend/taste.html">Taste</a>
+      <a href="/frontend/recipe.html">Recipes</a>
+      <a href="/frontend/diagnosis.html">Diagnosis</a>
+    </div>
+  </nav>
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">Your Personalized Recipes</h1>
+    <div id="recipe-list" class="space-y-6"></div>
+    <div id="llm-response" class="mt-6"></div>
+  </div>
+</body>
+</html>
