@@ -24,3 +24,26 @@ recipes.db
 
 # Logs
 *.log
+
+# Extra venv names
+venv/
+env/
+
+# Other DBs
+*.sqlite3
+*.db
+
+# IDEs
+.idea/
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Backup & temp
+*.tmp
+*.bak
+*.swp
+*.swo

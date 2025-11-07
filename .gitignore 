@@ -1,0 +1,43 @@
+# ========= PYTHON DEV ENV =========
+.venv/
+venv/
+env/
+
+# Bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment secrets
+.env
+*.env
+
+# Databases
+*.sqlite3
+*.db
+recipes.db
+
+# Logs
+*.log
+
+# ========= TESTING & COVERAGE =========
+.pytest_cache/
+coverage/
+nosetests.xml
+test-output/
+
+# ========= EDITOR / OS JUNKS =========
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# ========= PACKAGING / DIST =========
+build/
+dist/
+*.egg-info/
+.eggs/
+
