@@ -1,82 +1,40 @@
-from fastapi import APIRouter, HTTPException, Request
-from sqlmodel import select
-from backend.db.models import Recipe
-from backend.db.database import get_session
-
-from backend.services.generator import call_genai_llm
-
-from backend.schemas.recipe import RecipeIn, RatingIn
-
+from fastapi import APIRouter, Request, HTTPException, Depends
+from sqlalchemy.orm import Session as OrmSession
+from backend.schemas.recipe import RecipeOut
+from backend.models import RecipeRun
+from backend.services.llm import call_json_strict
+from pydantic import BaseModel
+from typing import List
 import json
 
-router = APIRouter()
+router = APIRouter(prefix="/api/recipes", tags=["recipes"])
 
-from fastapi import Request
+class GeneratePayload(BaseModel):
+    meals: List[str] = ["lunch","dinner","snack"]
+    count: int = 3
 
-@router.post("/generate")
-async def generate_recipe(request: Request):  
-    body = await request.json()
-    user_profile = body.get("user_profile")
+@router.post("/generate", response_model=List[RecipeOut])
+def generate(req: Request, body: GeneratePayload, db: OrmSession = Depends(...:=get_db)):
+    s = req.state.session
+    if not (s.get("evaluation_locked") and s.get("flavor_locked")):
+        raise HTTPException(status_code=400, detail="Evaluation and Flavor must be locked before generation")
 
-    prompt = (
-        "You are a polymath nutritionist. Generate 5 detailed recipes for the following profile:\n"
-        + json.dumps(user_profile)
+    sys = (
+      "You return STRICT JSON only: an array of recipes. No text outside JSON.\n"
+      "Each recipe must include: title, cuisine, meal_type, prep_time, difficulty, "
+      "ingredients[{item,quantity,unit}], instructions[\"1. ...\"], "
+      "macros{calories,protein_g,carbs_g,fat_g,fiber_g}, micros_highlights[], timing, notes (≤40 words).\n"
+      "Units: metric. Honor allergies as hard constraints."
     )
-
-    recipes = await call_genai_llm(prompt)  
-    return recipes
-
-
-@router.post("/{recipe_id}/save")
-def save_recipe(recipe_id: int, recipe: RecipeIn):
-    with get_session() as session:
-        new_recipe = Recipe(
-            name=recipe.name,
-            type=recipe.type,
-            cuisine=recipe.cuisine,
-            ingredients=json.dumps(recipe.ingredients),
-            instructions=json.dumps(recipe.instructions),
-            calories=recipe.calories,
-            macros=json.dumps(recipe.macros),
-            micros=json.dumps(recipe.micros),
-            user_info=json.dumps(recipe.user_info)
-        )
-        session.add(new_recipe)
-        session.commit()
-        return {"id": new_recipe.id, "message": "Recipe saved"}
-
-@router.get("/")
-def get_all_recipes(skip: int = 0, limit: int = 10):
-    with get_session() as session:
-        statement = select(Recipe).offset(skip).limit(limit)
-        results = session.exec(statement).all()
-        return results
-
-@router.get("/{recipe_id}")
-def get_recipe(recipe_id: int):
-    with get_session() as session:
-        recipe = session.get(Recipe, recipe_id)
-        if not recipe:
-            raise HTTPException(status_code=404, detail="Recipe not found")
-        return recipe
-
-@router.delete("/{recipe_id}")
-def delete_recipe(recipe_id: int):
-    with get_session() as session:
-        recipe = session.get(Recipe, recipe_id)
-        if not recipe:
-            raise HTTPException(status_code=404, detail="Recipe not found")
-        session.delete(recipe)
-        session.commit()
-        return {"message": "Recipe deleted"}
-
-@router.post("/{recipe_id}/rate")
-def rate_recipe(recipe_id: int, rating: RatingIn):
-    with get_session() as session:
-        recipe = session.get(Recipe, recipe_id)
-        if not recipe:
-            raise HTTPException(status_code=404, detail="Recipe not found")
-        recipe.rating = rating.rating
-        session.add(recipe)
-        session.commit()
-        return {"message": "Rating updated"}
+    user = {
+      "EVALUATION": s["evaluation"].model_dump(),
+      "FLAVOR": s["flavor_template"].model_dump(),
+      "ANALYSIS": s.get("analysis"),
+      "MEALS": body.meals,
+      "COUNT": body.count
+    }
+    data = call_json_strict(sys + "\n\nUSER:\n" + json.dumps(user, ensure_ascii=False))
+    if not isinstance(data, list) or len(data) != body.count:
+        raise HTTPException(status_code=422, detail="Model did not return expected recipe array")
+    db.add(RecipeRun(user_id=1, request_payload=user, result=data)); db.commit()
+    return data

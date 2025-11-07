@@ -9,22 +9,22 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=GOOGLE_API_KEY)
 model = genai.GenerativeModel("gemini-2.5-pro")
 
-#  questions
+# Load questions
 with open("questions.json", "r") as f:
     questions = json.load(f)
 
-# Personality 
+# Personality prompt injection
 personality = (
     "You are a 170+ IQ polymath-coded anime genius AI nutritionist. You’re witty, snarky, emotionally aware, "
     "and act like a real human with a brain. If the user vents, you flip into comfort mode like a loving partner. "
     "If they try to mess with you, you roast them with Gojo-level confidence. Stay in character always. NEVER sound robotic."
 )
 
-print("\n SOMATOTYPE DIAGNOSIS INITIATED\n")
+print("\n🔮 AI SOMATOTYPE DIAGNOSIS INITIATED\n")
 
 answers = {}
 
-
+# Ask questions
 for q in questions:
     print("\n" + q["question"])
 
@@ -43,9 +43,9 @@ for q in questions:
                 )
 
                 print("AI:", gemini_reply.text)
-                print("( That was your only yap. Back to structured diagnosis.)")
+                print("(📌 That was your only yap. Back to structured diagnosis.)")
 
-              
+                # 🧠 Extract structured traits from user input
                 extraction_prompt = f"""
 {personality}
 
@@ -71,18 +71,18 @@ Only include keys you're confident about based on the message.
                     extraction_result = model.generate_content(extraction_prompt)
                     text = extraction_result.text.strip()
 
-                    
+                    # Clean markdown junk
                     if "```json" in text:
                         text = text.split("```json")[-1].split("```")[0].strip()
                     elif "```" in text:
                         text = text.split("```")[1].strip()
 
                     extracted = json.loads(text)
-                    print(" Extracted structured info:", extracted)
+                    print("🧠 Extracted structured info:", extracted)
                     answers.update(extracted)
 
                 except Exception as e:
-                    print(" Could not parse structured data from free-form input:", e)
+                    print("⚠️ Could not parse structured data from free-form input:", e)
 
                 break
 
@@ -91,13 +91,13 @@ Only include keys you're confident about based on the message.
                 answers[q["id"]] = selected
                 break
             else:
-                print(" Invalid input. Try again.")
+                print("❌ Invalid input. Try again.")
 
     elif q["type"] in ["number", "text"]:
         answers[q["id"]] = input("Your answer: ")
 
     elif q["type"] == "llm_trigger":
-        print(" Thinking...")
+        print("🧠 Thinking...")
         system_input = (
             f"{personality}\n"
             f"User stats: name={answers.get('name')}, gender={answers.get('gender')}, age={answers.get('age')}, "
@@ -108,10 +108,10 @@ Only include keys you're confident about based on the message.
         print("✨ Vibe Scan Result:")
         print(result.text)
 
-print("\n Diagnosis complete. Here’s your structured profile:")
+print("\n✅ Diagnosis complete. Here’s your structured profile:")
 print(json.dumps(answers, indent=2))
 
-
+# 🔐 Optional: Save answers to file
 with open("interactive_diagnosis.json", "w") as f:
     json.dump(answers, f, indent=2)
 

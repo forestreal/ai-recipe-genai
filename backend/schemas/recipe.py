@@ -1,20 +1,27 @@
 from pydantic import BaseModel
-from typing import List, Dict
+from typing import List
 
-class RecipeIn(BaseModel):
-    type: str
-    name: str
+class Ingredient(BaseModel):
+    item: str
+    quantity: float | int | str
+    unit: str | None = None
+
+class Macros(BaseModel):
+    calories: int | float
+    protein_g: int | float
+    carbs_g: int | float
+    fat_g: int | float
+    fiber_g: int | float
+
+class RecipeOut(BaseModel):
+    title: str
     cuisine: str
-    ingredients: List[str]
+    meal_type: str
+    prep_time: str
+    difficulty: str
+    ingredients: List[Ingredient]
     instructions: List[str]
-    calories: float
-    macros: Dict[str, float]
-    micros: Dict[str, float]
-    user_info: Dict
-
-class RecipeOut(RecipeIn):
-    id: int
-    rating: int
-
-class RatingIn(BaseModel):
-    rating: int
+    macros: Macros
+    micros_highlights: List[str]
+    timing: str
+    notes: str

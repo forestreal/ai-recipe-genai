@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taste Preferences</title>
+  <script src="/frontend/app.js" defer></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-6">
+  <div class="max-w-2xl mx-auto bg-white shadow p-6 rounded">
+    <h1 class="text-2xl font-bold mb-4">Taste Preferences</h1>
+    <div id="taste-questions"></div>
+    <div class="mt-6 flex justify-end">
+      <button id="next-btn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Next →</button>
+    </div>
+    <div id="llm-response" class="mt-6"></div>
+  </div>
+</body>
+</html>

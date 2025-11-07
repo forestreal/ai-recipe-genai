@@ -1,127 +1,16 @@
 [
-  {
-    "id": "name",
-    "type": "text",
-    "question": "Alright, first \u2014 what should I call you? Give me your first name, nickname, alter ego\u2026 whatever fits."
-  },
-  {
-    "id": "gender",
-    "type": "choice",
-    "question": "Got it. What energy am I speaking to here?",
-    "options": [
-      "Male",
-      "Female",
-      "Non-binary",
-      "Prefer not to say",
-      "Other"
-    ]
-  },
-  {
-    "id": "age",
-    "type": "number",
-    "question": "Cool. How old are you? I don\u2019t judge \u2014 I optimize."
-  },
-  {
-    "id": "height",
-    "type": "text",
-    "question": "Height check \u2014 give it to me in cm or feet/inches. I\u2019ll use this to call you tall, short, or aggressively average later on."
-  },
-  {
-    "id": "weight",
-    "type": "text",
-    "question": "And what\u2019s your current weight? Don\u2019t hold back \u2014 this isn\u2019t the DMV."
-  },
-  {
-    "id": "trigger_llm_personality_deduction",
-    "type": "llm_trigger",
-    "question": "Alright, now that I know your stats, give me a second. Let me run a quick vibe scan and tell you what your name, age, and energy are screaming at me."
-  },
-  {
-    "id": "weight_gain",
-    "type": "choice",
-    "question": "When you eat a bit more than usual \u2014 even just 200-300 calories \u2014 what usually happens?",
-    "options": [
-      "I gain weight almost instantly.",
-      "Sometimes I gain, sometimes I don\u2019t.",
-      "I stay exactly the same, no matter what.",
-      "I honestly don\u2019t track it."
-    ]
-  },
-  {
-    "id": "weight_loss",
-    "type": "choice",
-    "question": "Let\u2019s flip it. When you try to lose weight, what\u2019s the story?",
-    "options": [
-      "I have to work *really* hard to see any loss.",
-      "It\u2019s slow, but it happens.",
-      "I drop weight fast when I actually try.",
-      "I haven\u2019t really tried seriously."
-    ]
-  },
-  {
-    "id": "bone_structure",
-    "type": "choice",
-    "question": "Do this: wrap your dominant hand around your other wrist. What do you see?",
-    "options": [
-      "Fingers don\u2019t touch \u2014 I\u2019ve got a big frame.",
-      "They just touch \u2014 medium build.",
-      "They overlap easily \u2014 definitely slender.",
-      "What even is this test?"
-    ]
-  },
-  {
-    "id": "carb_response",
-    "type": "choice",
-    "question": "What do carbs (bread, pasta, sugar) do to your body and brain?",
-    "options": [
-      "They knock me out \u2014 total energy crash.",
-      "They fill me up and I feel okay.",
-      "I feel more energized when I eat carbs.",
-      "No clue. Never paid attention."
-    ]
-  },
-  {
-    "id": "post_meal_energy",
-    "type": "choice",
-    "question": "After a typical meal (balanced or not), how do you feel?",
-    "options": [
-      "I get sleepy or sluggish.",
-      "I feel normal \u2014 no change.",
-      "I actually feel more alert/active.",
-      "It depends a lot on what I eat."
-    ]
-  },
-  {
-    "id": "fat_distribution",
-    "type": "choice",
-    "question": "When you gain fat, where does it show up *first*?",
-    "options": [
-      "Belly and waist",
-      "Thighs and hips",
-      "Face and neck",
-      "Evenly all over"
-    ]
-  },
-  {
-    "id": "muscle_gain",
-    "type": "choice",
-    "question": "If you actually commit to strength training \u2014 how fast do you see muscle?",
-    "options": [
-      "It\u2019s extremely slow or barely there.",
-      "Takes time, but eventually shows.",
-      "I gain muscle fast \u2014 almost too easily.",
-      "No idea. I haven\u2019t done consistent training."
-    ]
-  },
-  {
-    "id": "flexibility",
-    "type": "choice",
-    "question": "Real talk: can you touch your toes without bending your knees?",
-    "options": [
-      "Yes, with zero effort.",
-      "Yes, but I have to try.",
-      "Nope. My hamstrings are hostile.",
-      "Haven\u2019t tried since high school."
-    ]
-  }
+  { "id": "name", "type": "text", "question": "Alright, first — what should I call you?" },
+  { "id": "gender", "type": "choice", "question": "What energy am I speaking to here?", "options": ["Male","Female","Non-binary","Prefer not to say","Other"] },
+  { "id": "age", "type": "number", "question": "Cool. How old are you? I don’t judge — I optimize." },
+  { "id": "height", "type": "text", "question": "Height? cm or feet/inches — your call." },
+  { "id": "weight", "type": "text", "question": "Current weight? No DMV vibes here." },
+  { "id": "trigger_llm_personality_deduction", "type": "llm_trigger", "question": "Vibe scan engaged. One sec…" },
+  { "id": "weight_gain", "type": "choice", "question": "When you eat 200–300 extra calories, what happens?", "options": ["I gain weight almost instantly.","Sometimes I gain, sometimes I don’t.","I stay exactly the same.","I honestly don’t track it."] },
+  { "id": "weight_loss", "type": "choice", "question": "When you try to lose weight, what’s the story?", "options": ["I have to work really hard.","It’s slow, but it happens.","I drop weight fast when I try.","I haven’t tried seriously."] },
+  { "id": "bone_structure", "type": "choice", "question": "Wrap hand around wrist — what do you see?", "options": ["Fingers don’t touch — big frame.","They just touch — medium.","They overlap easily — slender.","What even is this test?"] },
+  { "id": "carb_response", "type": "choice", "question": "Carbs do what to you?", "options": ["Energy crash.","Feel okay/full.","More energized.","No clue."] },
+  { "id": "post_meal_energy", "type": "choice", "question": "After a typical meal you feel…", "options": ["Sleepy/sluggish.","No change.","More alert/active.","Depends."] },
+  { "id": "fat_distribution", "type": "choice", "question": "Fat shows up first where?", "options": ["Belly/waist","Thighs/hips","Face/neck","Evenly"] },
+  { "id": "muscle_gain", "type": "choice", "question": "If you lift consistently, muscle appears…", "options": ["Extremely slow/barely.","Takes time, but shows.","Fast — almost too easy.","No idea."] },
+  { "id": "flexibility", "type": "choice", "question": "Can you touch your toes without bending knees?", "options": ["Yes, easily.","Yes, with effort.","Nope.","Haven’t tried in years."] }
 ]
