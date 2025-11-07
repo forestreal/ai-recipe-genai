@@ -1,0 +1,26 @@
+
+# Python virtual environment
+.venv/
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# SQLite database
+recipes.db
+
+# Environment variables
+.env
+
+# VSCode settings
+.vscode/
+
+# Mac system files
+.DS_Store
+
+# Pytest cache
+.pytest_cache/
+
+# Logs
+*.log

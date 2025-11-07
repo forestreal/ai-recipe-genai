@@ -1,0 +1,134 @@
+[
+  {
+    "id": 1,
+    "question": "Which cuisines do you enjoy the most? (Select all that apply)",
+    "options": [
+      "Indian",
+      "Italian",
+      "Mexican",
+      "Japanese",
+      "Thai",
+      "Korean",
+      "Middle Eastern",
+      "French",
+      "Chinese",
+      "American",
+      "Mediterranean",
+      "Other"
+    ],
+    "type": "multi"
+  },
+  {
+    "id": 2,
+    "question": "Do you have any food allergies or intolerances?",
+    "options": [
+      "Nuts",
+      "Dairy",
+      "Gluten",
+      "Shellfish",
+      "Soy",
+      "Eggs",
+      "Sesame",
+      "Other"
+    ],
+    "type": "free+options"
+  },
+  {
+    "id": 3,
+    "question": "Are there any specific ingredients, textures, or flavors you dislike or want to avoid?",
+    "options": [
+      "Bitter vegetables",
+      "Mushy textures",
+      "Strong-smelling cheeses",
+      "Overly spicy foods",
+      "Too sweet",
+      "Artificial flavors",
+      "None"
+    ],
+    "type": "free+options"
+  },
+  {
+    "id": 4,
+    "question": "When you crave something, what\u2019s your go-to flavor craving?",
+    "options": [
+      "Spicy",
+      "Sweet",
+      "Savory/Umami",
+      "Sour/Tangy",
+      "Bitter",
+      "Salty",
+      "Creamy",
+      "Crunchy"
+    ],
+    "type": "single"
+  },
+  {
+    "id": 5,
+    "question": "How do you feel about heat levels in food?",
+    "options": [
+      "I love intense spice \u2014 bring the fire",
+      "I like mild warmth",
+      "I avoid spicy food entirely"
+    ],
+    "type": "single"
+  },
+  {
+    "id": 6,
+    "question": "Pick the dish that excites your taste buds most:",
+    "options": [
+      "Miso-glazed salmon with soba noodles",
+      "Creamy mushroom risotto",
+      "Street-style tacos with lime and chili",
+      "Biryani with cucumber raita",
+      "Shakshuka with herbed sourdough",
+      "Stir-fried tofu and veggies in soy garlic glaze"
+    ],
+    "type": "single"
+  },
+  {
+    "id": 7,
+    "question": "Do you enjoy fermented or pickled flavors?",
+    "options": [
+      "Yes, I love them (kimchi, miso, sauerkraut)",
+      "Occasionally \u2014 depends on the dish",
+      "No, not really into those flavors"
+    ],
+    "type": "single"
+  },
+  {
+    "id": 8,
+    "question": "Which herb flavor profile excites you the most?",
+    "options": [
+      "Fresh & Mediterranean (basil, oregano, thyme)",
+      "Warm & Indian (coriander, curry leaf, cumin)",
+      "Sharp & Asian (lemongrass, Thai basil, mint)",
+      "Deep & Earthy (sage, rosemary, bay leaf)"
+    ],
+    "type": "single"
+  },
+  {
+    "id": 9,
+    "question": "What's your comfort food style?",
+    "options": [
+      "Creamy and rich",
+      "Warm and spicy",
+      "Fresh and citrusy",
+      "Crispy and salty",
+      "Mild and brothy"
+    ],
+    "type": "single"
+  },
+  {
+    "id": 10,
+    "question": "Are you following any dietary goals or styles?",
+    "options": [
+      "High-protein",
+      "Low-carb / Keto",
+      "Vegan / Plant-based",
+      "Balanced omnivore",
+      "Anti-inflammatory",
+      "Just vibing / No restriction"
+    ],
+    "type": "single"
+  }
+]
