@@ -1,4 +1,5 @@
 import os
+# formatted: minor whitespace/formatting update (non-functional)
 from dotenv import load_dotenv
 load_dotenv()
 import uuid, json
@@ -6,7 +7,7 @@ from fastapi import FastAPI, Request, Response
 from fastapi.responses import FileResponse
 from backend.core.config import settings
 from backend.redisx import r
-
+#Few changes
 DEFAULT_STATE = {
   "answers":{}, "flavor":{}, "yap_summary":[], "vibe":None,
   "evaluation_locked":False, "evaluation":None,

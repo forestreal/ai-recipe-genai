@@ -1,3 +1,4 @@
+// formatted: small non-functional formatting change
 let questions = [];
 let idx = 0;
 let layer = "diagnosis";
