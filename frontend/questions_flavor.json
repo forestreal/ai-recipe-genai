@@ -1,0 +1,9 @@
+[
+  { "id": "cuisines", "type": "choice", "question": "Pick cuisines you vibe with most:", "options": ["Indian","Lebanese","Thai","Italian","Japanese","Mexican","Mediterranean"] },
+  { "id": "heat", "type": "choice", "question": "Chili heat level?", "options": ["low","medium","high"] },
+  { "id": "herbs_spices", "type": "text", "question": "Fav herbs/spices? (comma-separated)" },
+  { "id": "preferred_proteins", "type": "text", "question": "Preferred proteins? (comma-separated, veg ok)" },
+  { "id": "avoidances", "type": "text", "question": "Cooking avoidances? (e.g., deep-fry, too oily)" },
+  { "id": "allergies", "type": "text", "question": "Allergies? (comma-separated, leave blank if none)" },
+  { "id": "dislikes", "type": "text", "question": "Hard dislikes? (comma-separated)" }
+]

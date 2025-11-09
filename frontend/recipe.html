@@ -1,26 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recipe Results</title>
-  <script src="/frontend/app.js" defer></script>
-  <script>document.addEventListener("DOMContentLoaded", async () => { await generateRecipes(); });</script>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="utf-8"/>
+  <title>Generate Recipes</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    .status { margin: 16px 0; padding: 12px; border-radius: 8px; background: #1e2530; border: 1px solid #2b3442; }
+    .status.success { background: #1a3a2a; border-color: #2d5a3d; color: #4ade80; }
+    .status.error { background: #3a1a1a; border-color: #5a2d2d; color: #f87171; }
+    .status.info { background: #1a2a3a; border-color: #2d3d5a; color: #60a5fa; }
+    .step { margin: 12px 0; padding: 12px; background: #0f1318; border-radius: 6px; border: 1px solid #2b3442; }
+    .step.completed { border-left: 4px solid #4ade80; }
+    .step.pending { border-left: 4px solid #60a5fa; opacity: 0.7; }
+    .instructions { margin: 20px 0; padding: 16px; background: #1e2530; border-radius: 8px; border: 1px solid #2b3442; }
+    .instructions h3 { margin: 0 0 12px 0; color: #60a5fa; }
+    .instructions ol { margin: 8px 0; padding-left: 24px; }
+    .instructions li { margin: 8px 0; }
+    .instructions a { color: #60a5fa; text-decoration: underline; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .step button { margin-left: 12px; }
+    .step span { margin-left: 12px; }
+  </style>
 </head>
-<body class="bg-gray-50 p-8">
-  <nav class="bg-white border-b sticky top-0 z-30">
-    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center gap-4">
-      <a href="/frontend/index.html" class="font-semibold">Home</a>
-      <a href="/frontend/taste.html">Taste</a>
-      <a href="/frontend/recipe.html">Recipes</a>
-      <a href="/frontend/diagnosis.html">Diagnosis</a>
+<body>
+  <div class="container">
+    <div class="nav" style="margin-bottom: 24px; padding: 12px; background: #1e2530; border-radius: 8px;">
+      <a href="index.html" style="color: #60a5fa; text-decoration: none; margin-right: 16px;">🏠 Home</a>
+      <a href="diagnosis.html" style="color: #60a5fa; text-decoration: none; margin-right: 16px;">🏥 Diagnosis</a>
+      <a href="flavor.html" style="color: #60a5fa; text-decoration: none; margin-right: 16px;">🌶️ Flavor</a>
     </div>
-  </nav>
-  <div class="max-w-3xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6">Your Personalized Recipes</h1>
-    <div id="recipe-list" class="space-y-6"></div>
-    <div id="llm-response" class="mt-6"></div>
+    
+    <h1>Generate Recipes</h1>
+    
+    <div class="instructions">
+      <h3>📋 Instructions</h3>
+      <ol>
+        <li><strong>Start with Diagnosis:</strong> <a href="diagnosis.html">Go to Diagnosis Page</a> and answer all questions</li>
+        <li><strong>Set Flavor Preferences:</strong> <a href="flavor.html">Go to Flavor Page</a> and set your preferences</li>
+        <li><strong>Lock Evaluation:</strong> Click the button below to lock your diagnosis</li>
+        <li><strong>Lock Flavor:</strong> Click the button below to lock your flavor profile</li>
+        <li><strong>Compile Analysis:</strong> Click to generate your culinary analysis</li>
+        <li><strong>Generate Recipes:</strong> Finally, generate your personalized recipes!</li>
+      </ol>
+    </div>
+
+    <div id="status" class="status info" style="display: none;"></div>
+
+    <div class="step pending" id="step-eval">
+      <strong>Step 1:</strong> Lock Evaluation
+      <button id="lockEval">Lock Evaluation</button>
+      <span id="eval-status"></span>
+    </div>
+
+    <div class="step pending" id="step-flavor">
+      <strong>Step 2:</strong> Lock Flavor
+      <button id="lockFlavor" disabled>Lock Flavor</button>
+      <span id="flavor-status"></span>
+    </div>
+
+    <div class="step pending" id="step-analysis">
+      <strong>Step 3:</strong> Compile Analysis
+      <button id="compileAnalysis" disabled>Compile Analysis</button>
+      <span id="analysis-status"></span>
+    </div>
+
+    <div class="step pending" id="step-generate">
+      <strong>Step 4:</strong> Generate Recipes
+      <button id="genBtn" disabled>Generate 3 Recipes</button>
+      <span id="generate-status"></span>
+      <!-- Dev helper: generate a single demo recipe from the server (no locks/auth) -->
+      <button id="devGenBtn" title="Dev: generate a demo recipe (calls /api/debug/generate)" style="margin-left:12px;">Dev: Demo Recipe</button>
+    </div>
+
+    <div style="margin-top: 24px;">
+      <h3>Recipe Output:</h3>
+      <div id="out" class="recipe-list" style="min-height:200px;">
+        <div class="placeholder">No recipes generated yet. Follow the steps above to generate your personalized recipes.<br><br>💡 Tip: Start by completing the diagnosis and flavor questions first!</div>
+      </div>
+    </div>
   </div>
+  <script src="app.js"></script>
+  <script>initGenerate();</script>
 </body>
 </html>

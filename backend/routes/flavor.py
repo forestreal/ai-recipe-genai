@@ -2,6 +2,9 @@ from fastapi import APIRouter, Request, Depends
 from sqlalchemy.orm import Session as OrmSession
 from backend.schemas.flavor import FlavorAnswer, FlavorTemplate, FlavorLockRequest, FlavorLockResponse
 from backend.models import Flavor as FlavorRow
+from backend.db import get_db
+from backend.auth import get_current_user
+from backend.models import User
 import time
 
 router = APIRouter(prefix="/api/flavor", tags=["flavor"])
@@ -13,7 +16,7 @@ def flavor_answer(req: Request, body: FlavorAnswer):
     return {"ok": True}
 
 @router.post("/lock", response_model=FlavorLockResponse)
-def flavor_lock(req: Request, body: FlavorLockRequest, db: OrmSession = Depends(...:=get_db)):
+def flavor_lock(req: Request, body: FlavorLockRequest, current_user: User = Depends(get_current_user), db: OrmSession = Depends(get_db)):
     s = req.state.session
     if s.get("flavor_locked") and not body.force:
         tmpl = s["flavor_template"]
@@ -33,6 +36,6 @@ def flavor_lock(req: Request, body: FlavorLockRequest, db: OrmSession = Depends(
         )
         s["flavor_template"] = tmpl
         s["flavor_locked"] = True
-        db.add(FlavorRow(user_id=1, template=tmpl.model_dump(), locked=True))
+        db.add(FlavorRow(user_id=current_user.id, template=tmpl.model_dump(), locked=True))
         db.commit()
     return FlavorLockResponse(locked=True, flavor=tmpl)

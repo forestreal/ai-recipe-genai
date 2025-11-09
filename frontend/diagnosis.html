@@ -2,20 +2,71 @@
 <html>
 <head>
   <meta charset="utf-8"/>
-  <title>Diagnosis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnosis - AI Recipe Generator</title>
   <link rel="stylesheet" href="styles.css"/>
+  <style>
+    .nav { margin-bottom: 24px; padding: 12px; background: #1e2530; border-radius: 8px; }
+    .nav a { color: #60a5fa; text-decoration: none; margin-right: 16px; }
+    .nav a:hover { text-decoration: underline; }
+    .progress { margin: 16px 0; padding: 8px; background: #1e2530; border-radius: 8px; }
+    .progress-bar { height: 8px; background: #2b3442; border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; background: #60a5fa; transition: width 0.3s; }
+  </style>
 </head>
 <body>
   <div class="container">
+    <div class="nav">
+      <a href="index.html">🏠 Home</a>
+      <a href="flavor.html">🌶️ Flavor</a>
+      <a href="recipe.html">👨‍🍳 Recipes</a>
+    </div>
     <h1>Quick Diagnostic</h1>
+    <div class="progress">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress" style="width: 0%"></div>
+      </div>
+      <div style="margin-top: 8px; font-size: 0.9rem; color: #9ad;">
+        <span id="progress-text">Question 0 of 0</span>
+      </div>
+    </div>
     <div id="slide"></div>
     <div class="actions">
-      <button id="yapBtn">Yap</button>
-      <button id="nextBtn" disabled>Next</button>
+      <button id="yapBtn">💬 Yap (Chat with AI)</button>
+      <button id="nextBtn" disabled>Next →</button>
     </div>
     <div id="reply" class="reply"></div>
   </div>
   <script src="app.js"></script>
-  <script>initDiagnosis();</script>
+  <script>
+    let totalQuestions = 0;
+    let currentQuestion = 0;
+    
+    async function initDiagnosisWithProgress(){
+      await initDiagnosis();
+      totalQuestions = questions.length;
+      updateProgress();
+    }
+    
+    function updateProgress() {
+      const progressEl = document.getElementById('progress');
+      const progressText = document.getElementById('progress-text');
+      if (progressEl && progressText && totalQuestions > 0) {
+        const percent = ((currentQuestion + 1) / totalQuestions) * 100;
+        progressEl.style.width = percent + '%';
+        progressText.textContent = `Question ${currentQuestion + 1} of ${totalQuestions}`;
+      }
+    }
+    
+    // Override nextSlide to update progress
+    const originalNextSlide = nextSlide;
+    nextSlide = function() {
+      currentQuestion++;
+      updateProgress();
+      originalNextSlide();
+    };
+    
+    initDiagnosisWithProgress();
+  </script>
 </body>
 </html>

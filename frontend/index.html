@@ -2,19 +2,205 @@
 <html>
 <head>
   <meta charset="utf-8"/>
-  <title>Generate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Recipe Generator - Home</title>
   <link rel="stylesheet" href="styles.css"/>
+  <style>
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #1e2530 0%, #0f1318 100%);
+      border-radius: 16px;
+      margin-bottom: 40px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #60a5fa 0%, #4ade80 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: #9ad;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin: 40px 0;
+    }
+    .card {
+      background: #1e2530;
+      border: 1px solid #2b3442;
+      border-radius: 12px;
+      padding: 24px;
+      transition: transform 0.2s, border-color 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #60a5fa;
+    }
+    .card h2 {
+      margin: 0 0 12px 0;
+      color: #60a5fa;
+      font-size: 1.5rem;
+    }
+    .card p {
+      margin: 0;
+      color: #9ad;
+      line-height: 1.6;
+    }
+    .card .emoji {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .steps {
+      background: #1e2530;
+      border: 1px solid #2b3442;
+      border-radius: 12px;
+      padding: 24px;
+      margin: 40px 0;
+    }
+    .steps h2 {
+      margin: 0 0 20px 0;
+      color: #60a5fa;
+    }
+    .steps ol {
+      margin: 0;
+      padding-left: 24px;
+    }
+    .steps li {
+      margin: 12px 0;
+      color: #eaeef2;
+      line-height: 1.8;
+    }
+    .status-check {
+      background: #1e2530;
+      border: 1px solid #2b3442;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 40px 0;
+    }
+    .status-check h2 {
+      margin: 0 0 16px 0;
+      color: #60a5fa;
+    }
+    .status-item {
+      padding: 12px;
+      margin: 8px 0;
+      background: #0f1318;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .status-item .icon {
+      font-size: 1.5rem;
+    }
+    .status-item.success .icon { color: #4ade80; }
+    .status-item.error .icon { color: #f87171; }
+    .status-item.pending .icon { color: #60a5fa; }
+  </style>
 </head>
 <body>
   <div class="container">
-    <h1>Generate Recipes</h1>
-    <button id="lockEval">Lock Evaluation</button>
-    <button id="lockFlavor">Lock Flavor</button>
-    <button id="compileAnalysis">Compile Analysis</button>
-    <button id="genBtn">Generate 3 Recipes</button>
-    <pre id="out"></pre>
+    <div class="hero">
+      <h1>🍳 AI Recipe Generator</h1>
+      <p>Get personalized recipes tailored to your health goals, fitness level, and taste preferences using AI</p>
+    </div>
+
+    <div class="cards">
+      <a href="diagnosis.html" class="card">
+        <span class="emoji">🏥</span>
+        <h2>Diagnosis</h2>
+        <p>Answer questions about your health, fitness goals, and lifestyle to create your personalized profile.</p>
+      </a>
+
+      <a href="flavor.html" class="card">
+        <span class="emoji">🌶️</span>
+        <h2>Flavor Profile</h2>
+        <p>Set your flavor preferences, favorite cuisines, spice tolerance, and dietary restrictions.</p>
+      </a>
+
+      <a href="recipe.html" class="card">
+        <span class="emoji">👨‍🍳</span>
+        <h2>Generate Recipes</h2>
+        <p>Generate personalized recipes based on your diagnosis and flavor profile. Lock your profiles first!</p>
+      </a>
+    </div>
+
+    <div class="steps">
+      <h2>📋 How It Works</h2>
+      <ol>
+        <li><strong>Start with Diagnosis:</strong> Go to the Diagnosis page and answer questions about your health, fitness goals, body type, and lifestyle.</li>
+        <li><strong>Set Flavor Preferences:</strong> Visit the Flavor Profile page to set your cuisine preferences, spice level, and dietary restrictions.</li>
+        <li><strong>Lock Your Profiles:</strong> On the Recipe Generation page, lock your evaluation and flavor profile.</li>
+        <li><strong>Compile Analysis:</strong> Generate your culinary analysis that combines your health and flavor data.</li>
+        <li><strong>Get Recipes:</strong> Finally, generate personalized recipes tailored just for you!</li>
+      </ol>
+    </div>
+
+    <div class="status-check">
+      <h2>🔍 System Status</h2>
+      <div id="status-container">
+        <div class="status-item pending">
+          <span class="icon">⏳</span>
+          <span>Checking API connection...</span>
+        </div>
+      </div>
+    </div>
   </div>
-  <script src="app.js"></script>
-  <script>initGenerate();</script>
+
+  <script>
+    const API_BASE = 'http://localhost:8000';
+    
+    // Check API status
+    async function checkStatus() {
+      const container = document.getElementById('status-container');
+      
+      // Check API
+      try {
+        const res = await fetch(`${API_BASE}/health`);
+        if (res.ok) {
+          container.innerHTML = `
+            <div class="status-item success">
+              <span class="icon">✅</span>
+              <span>API is running and ready</span>
+            </div>
+          `;
+        } else {
+          throw new Error('API returned error');
+        }
+      } catch (error) {
+        console.error('API connection error:', error);
+        container.innerHTML = `
+          <div class="status-item error">
+            <span class="icon">❌</span>
+            <span>API is not responding. Error: ${error.message}</span>
+            <div style="margin-top: 8px; font-size: 0.9rem; color: #9ad;">
+              Make sure:<br>
+              • Backend is running: <code style="background: #0f1318; padding: 2px 6px; border-radius: 4px;">sudo docker compose up -d</code><br>
+              • API is accessible: <code style="background: #0f1318; padding: 2px 6px; border-radius: 4px;">curl http://localhost:8000/health</code>
+            </div>
+          </div>
+        `;
+      }
+    }
+    
+    // Check status on load
+    checkStatus();
+    
+    // Check every 10 seconds
+    setInterval(checkStatus, 10000);
+  </script>
 </body>
 </html>

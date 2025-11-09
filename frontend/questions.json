@@ -1,0 +1,16 @@
+[
+  { "id": "name", "type": "text", "question": "Alright, first — what should I call you?" },
+  { "id": "gender", "type": "choice", "question": "What energy am I speaking to here?", "options": ["Male","Female","Non-binary","Prefer not to say","Other"] },
+  { "id": "age", "type": "number", "question": "Cool. How old are you? I don’t judge — I optimize." },
+  { "id": "height", "type": "text", "question": "Height? cm or feet/inches — your call." },
+  { "id": "weight", "type": "text", "question": "Current weight? No DMV vibes here." },
+  { "id": "trigger_llm_personality_deduction", "type": "llm_trigger", "question": "Vibe scan engaged. One sec…" },
+  { "id": "weight_gain", "type": "choice", "question": "When you eat 200–300 extra calories, what happens?", "options": ["I gain weight almost instantly.","Sometimes I gain, sometimes I don’t.","I stay exactly the same.","I honestly don’t track it."] },
+  { "id": "weight_loss", "type": "choice", "question": "When you try to lose weight, what’s the story?", "options": ["I have to work really hard.","It’s slow, but it happens.","I drop weight fast when I try.","I haven’t tried seriously."] },
+  { "id": "bone_structure", "type": "choice", "question": "Wrap hand around wrist — what do you see?", "options": ["Fingers don’t touch — big frame.","They just touch — medium.","They overlap easily — slender.","What even is this test?"] },
+  { "id": "carb_response", "type": "choice", "question": "Carbs do what to you?", "options": ["Energy crash.","Feel okay/full.","More energized.","No clue."] },
+  { "id": "post_meal_energy", "type": "choice", "question": "After a typical meal you feel…", "options": ["Sleepy/sluggish.","No change.","More alert/active.","Depends."] },
+  { "id": "fat_distribution", "type": "choice", "question": "Fat shows up first where?", "options": ["Belly/waist","Thighs/hips","Face/neck","Evenly"] },
+  { "id": "muscle_gain", "type": "choice", "question": "If you lift consistently, muscle appears…", "options": ["Extremely slow/barely.","Takes time, but shows.","Fast — almost too easy.","No idea."] },
+  { "id": "flexibility", "type": "choice", "question": "Can you touch your toes without bending knees?", "options": ["Yes, easily.","Yes, with effort.","Nope.","Haven’t tried in years."] }
+]

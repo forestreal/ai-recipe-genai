@@ -5,6 +5,8 @@ from backend.db import get_db
 from backend.services.evaluation import build_snapshot
 from backend.schemas.evaluation import EvaluationRequest, EvaluationResponse
 from backend.models import Evaluation
+from backend.auth import get_current_user
+from backend.models import User
 
 router = APIRouter(prefix="/api/diagnosis", tags=["diagnosis"])
 
@@ -19,7 +21,7 @@ def answer(req: Request, body: AnswerIn):
     return {"ok": True}
 
 @router.post("/evaluate", response_model=EvaluationResponse)
-def evaluate(req: Request, body: EvaluationRequest, db: OrmSession = Depends(get_db)):
+def evaluate(req: Request, body: EvaluationRequest, current_user: User = Depends(get_current_user), db: OrmSession = Depends(get_db)):
     s = req.state.session
     if s.get("evaluation_locked") and not body.force:
         snap = s["evaluation"]
@@ -36,7 +38,7 @@ def evaluate(req: Request, body: EvaluationRequest, db: OrmSession = Depends(get
         "constraints": {"allergies": snap.constraints.get("allergies", []), "dislikes": snap.constraints.get("dislikes", [])},
         "vibe": snap.persona.vibe_line or ""
     }
-    # Persist (replace 1 with real user ID if you wire auth)
-    db.add(Evaluation(user_id=1, snapshot=snap.model_dump(), locked=True))
+    # Persist (use authenticated current user)
+    db.add(Evaluation(user_id=current_user.id, snapshot=snap.model_dump(), locked=True))
     db.commit()
     return EvaluationResponse(locked=True, evaluation=snap, public_summary=public)
