@@ -28,3 +28,50 @@ stack
 
 demo: 
 https://github.com/user-attachments/assets/321e722a-feb0-4eb6-b158-bfaf588ea2ab
+
+
+
+
+## Local Setup
+
+Follow the steps below to run the project locally.
+
+### 1. Create and activate a virtual environment
+```bash
+python3 -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### 2. Create your `.env` file
+Copy the example environment file:
+```bash
+cp .env.example .env
+```
+
+Fill in the required values inside `.env`:
+
+- GOOGLE_API_KEY or GEMINI_API_KEY – add your own API key  
+- DATABASE_URL – use default or your own  
+- REDIS_URL – optional  
+- JWT_SECRET – change to a long random value  
+- CORS_ORIGINS – leave default unless you need something else  
+
+(All required variables are listed in `.env.example`.)
+
+### 3. Run the backend API
+```bash
+uvicorn backend.core.main:app --reload
+```
+
+Backend runs at:
+```
+http://localhost:8000
+```
+
+### 4. Run the frontend
+Open:
+```
+frontend/index.html
+```
+directly in your browser.
